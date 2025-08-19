@@ -36,13 +36,13 @@ include_directories(/home/ubuntu/wtwei/object_detect/include)
 
 # object_track
 add_library(track_lib SHARED IMPORTED)
-set_target_properties( track_lib PROPERTIES IMPORTED_LOCATION /home/ubuntu/wtwei/object_track/build/libtrack_btk_n_x86_V6.3.so )
+set_target_properties( track_lib PROPERTIES IMPORTED_LOCATION /home/ubuntu/wtwei/object_track/build/libtrack_btk_x86_V6.3.so )
 include_directories(/home/ubuntu/wtwei/object_track/include)
 
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-add_library(vehicle_parking_detect_V1.0 SHARED ${CMAKE_SOURCE_DIR}/src/vehicle_parking_detect.cpp ${CMAKE_SOURCE_DIR}/src/world_coord.cu ${CMAKE_SOURCE_DIR}/src/cuda_features.cu)
+add_library(vehicle_parking_detect_V1.0 SHARED ${CMAKE_SOURCE_DIR}/src/vehicle_parking_detect_optimized.cpp ${CMAKE_SOURCE_DIR}/src/world_coord.cu ${CMAKE_SOURCE_DIR}/src/cuda_memory_pool.cu ${CMAKE_SOURCE_DIR}/src/cuda_features_optimized.cu)
 target_link_libraries(vehicle_parking_detect_V1.0 
     opencv_img_hash 
     opencv_world

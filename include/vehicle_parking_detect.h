@@ -42,9 +42,9 @@ public:
     };
 
 // 工厂函数
-VehicleParkingDetect* createVehicleParkingDetect();
+VehicleParkingDetect* createVehicleParkingDetectOptimized();
 // 销毁检测器
-void destroyVehicleParkingDetect(VehicleParkingDetect* detector);
+void destroyVehicleParkingDetectOptimized(VehicleParkingDetect* detector);
 
 
 

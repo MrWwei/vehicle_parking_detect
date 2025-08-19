@@ -1,10 +1,16 @@
 #include <opencv2/opencv.hpp>
 #include <deque>
 #include <unordered_map>
+#include <chrono>
 #include "byte_track.h"
 #include "detect.h"
 #include "vehicle_parking_detect.h"
 using namespace std;
+
+// 声明优化版本的工厂函数
+VehicleParkingDetect* createVehicleParkingDetectOptimized();
+void destroyVehicleParkingDetectOptimized(VehicleParkingDetect* detector);
+
 void launch_world_coord(const std::vector<cv::Point2f>& pts,
                         const cv::Mat& H,
                         std::vector<cv::Point2f>& world);
@@ -24,8 +30,27 @@ int main() {
     
     xtkj::IDetect*     detector = xtkj::createDetect();
     xtkj::ITracker*    tracker  = xtkj::createTracker(30, 30, 0.5, 0.6, 0.8);
+    tracker->init(30, 30, 0.5, 0.6, 0.8);
 
-    VehicleParkingDetect* vehicleParkingDetect = createVehicleParkingDetect();
+    VehicleParkingDetect* vehicleParkingDetect = createVehicleParkingDetectOptimized();
+    
+    // 初始化车辆停车检测参数
+    VehicleParkingInitParams parkingParams;
+    parkingParams.K = 4;
+    parkingParams.EPS_WORLD = 2.0;
+    parkingParams.MIN_SPEED_FRAMES = 3;
+    parkingParams.RESET_EVERY = 200;
+    parkingParams.MAX_FEATURES = 800;
+    parkingParams.FEATURE_QUALITY = 0.02;
+    parkingParams.MIN_DISTANCE = 10;
+    parkingParams.MIN_TRACK_POINTS = 80;
+    parkingParams.RANSAC_THRESHOLD = 3.0;
+    parkingParams.MIN_INLIERS = 80;
+    
+    if (!vehicleParkingDetect->init(parkingParams)) {
+        std::cerr << "Failed to initialize vehicle parking detector" << std::endl;
+        return -1;
+    }
     
     AlgorConfig        algorConfig;
     algorConfig.algorName_ = "object_detect";
@@ -113,5 +138,12 @@ int main() {
         if (cv::waitKey(1) == 27) break;
         ++frame_id;
     }
+    
+    // 清理资源
+    destroyVehicleParkingDetectOptimized(vehicleParkingDetect);
+    delete tracker;
+    delete detector;
+    delete[] outs;
+    
     return 0;
 }
