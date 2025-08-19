@@ -1,0 +1,11 @@
+build
+outs
+*.onnx
+*.trt
+*.jpg
+seg_model
+segmentation_results
+seg_results
+mask_outs
+*.mp4
+*.pt
