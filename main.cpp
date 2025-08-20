@@ -37,7 +37,7 @@ int main() {
     // 初始化车辆停车检测参数
     VehicleParkingInitParams parkingParams;
     parkingParams.K = 4;
-    parkingParams.EPS_WORLD = 2.0;
+    parkingParams.EPS_WORLD = 1.0;
     parkingParams.MIN_SPEED_FRAMES = 3;
     parkingParams.RESET_EVERY = 200;
     parkingParams.MAX_FEATURES = 800;

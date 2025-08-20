@@ -14,7 +14,7 @@ struct VehicleParkingInitParams{
     int MAX_FEATURES = 800;
     double FEATURE_QUALITY = 0.02;
     int MIN_DISTANCE = 10;
-    int MIN_TRACK_POINTS = 80;
+    int MIN_TRACK_POINTS = 20;
     double RANSAC_THRESHOLD = 3.0;
     int MIN_INLIERS = 80;
 };
